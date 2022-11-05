@@ -9,16 +9,22 @@ public class PomodoroTimer {
         String[] cmd = new Scanner(System.in).nextLine().split(" ");
         int workTime =1;
         int breakTime = 1;
+        int iterCount = 1;
+        int mult = 1;
         boolean isHelp = false;
         for (int i = 0; i < cmd.length; i++) {
             switch (cmd[i]){
                 case "-w"-> workTime = Integer.parseInt(cmd[++i]);
                 case "-b"-> breakTime = Integer.parseInt(cmd[++i]);
+                case "-count"-> iterCount = Integer.parseInt(cmd[++i]);
+                case "-m"-> mult = Integer.parseInt(cmd[++i]);
                 case "--help" -> {
                     System.out.println("""
                             \nPomodoro - приложение для лучшей работы
                             -w - Сколько работать
                             -b - Сколько отдыхать
+                            -count - Количество итераций
+                            -m - множитель
                             -help - Помощь
                             """);
                     isHelp = true;
@@ -28,8 +34,13 @@ public class PomodoroTimer {
 
         }
         if(isHelp) return;
+
         long startTime = System.currentTimeMillis();
-        timer(workTime, breakTime);
+        for (int i=1; i <= iterCount; i++ ) {
+            timer(workTime, breakTime);
+            System.out.println("Итерация №"+ i + " Время работы " + workTime);
+            workTime *= mult;
+        }
         long endTime = System.currentTimeMillis();
         System.out.println("Таймер работал "+ (endTime-startTime)/(1000*60) + " min");
 
